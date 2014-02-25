@@ -12,7 +12,7 @@ defmodule Observable.Mixfile do
 
   # Configuration for the OTP application
   def application do
-    [mod: { Observable, [] },
+    [mod: { Observable, "mixobserve" },
      applications: [:logger ]
     ]
   end

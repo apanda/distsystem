@@ -14,7 +14,8 @@ defmodule Logger.Logger do
     :gen_server.start_link({ :local, @name }, __MODULE__, fname, [])
   end
 
-  @doc """Log a message sent to this logger
+  @doc """
+  Log a message sent to this logger
   """
   def log_message(msg) do
     :gen_server.cast @name, {:log, msg}
