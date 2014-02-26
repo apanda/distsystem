@@ -7,6 +7,6 @@ defmodule Observable do
     Observable.Supervisor.start_link (_args)
   end
 
-  def main(args) do
+  def main(_) do
   end
 end
