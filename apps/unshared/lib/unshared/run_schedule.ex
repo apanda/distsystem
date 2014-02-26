@@ -19,7 +19,8 @@ defmodule Unshared.Schedule do
       {:error, reason} -> reason
       l -> 
         [type, msg] = String.split(String.rstrip(l), ":")
-        Unshared.Unshared.emulate(type, msg)
+        Unshared.Unshared.emulate(binary_to_atom(type), msg)
+        schedule (f)
     end
   end
 

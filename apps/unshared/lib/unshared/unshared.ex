@@ -5,7 +5,6 @@ defmodule Unshared.Unshared do
   A driver for sending messages to the observer
   """
   def emulate(type, msg) do
-    IO.puts("Emulating")
     Observable.Observable.send_message("observer", type, msg)
   end
 

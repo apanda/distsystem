@@ -24,8 +24,26 @@ defmodule Observable.Observable do
     {:ok, name}
   end
 
-  def handle_call({type, msg}, _from, name) do
-    Logger.Logger.log_message("#{name}:#{type}:#{msg}")
+  defp internal_event({type, msg}, count, name) do
+    Logger.Logger.log_message("#{name}:#{type}:#{msg}:internal#{count}")
+
+  end
+
+  def handle_call({:error, msg}, _from, name) do
+    Logger.Logger.log_message("#{name}:normal:#{msg}:external")
+    Enum.each 1..2, fn x ->
+      internal_event({:normal, msg}, x, name)
+    end
+    internal_event({:error, msg}, 2, name)
     {:reply, :ok, name}
   end
+
+  def handle_call({type, msg}, _from, name) do
+    Logger.Logger.log_message("#{name}:#{type}:#{msg}:external")
+    Enum.each 1..2, fn x ->
+      internal_event({type, msg}, x, name)
+    end
+    {:reply, :ok, name}
+  end
+
 end
