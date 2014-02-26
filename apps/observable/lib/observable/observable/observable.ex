@@ -17,15 +17,15 @@ defmodule Observable.Observable do
   Send a given kind of message to the observable agent
   """
   def send_message(name, type, msg) do
-    :gen_server.cast binary_to_existing_atom(name), {type, msg}
+    :gen_server.call binary_to_existing_atom(name), {type, msg}
   end
 
   def init(name) do
     {:ok, name}
   end
 
-  def handle_cast({type, msg}, name) do
-    Logger.Logger.log_message("#{name}:#{type}: #{msg}")
-    {:noreply, name}
+  def handle_call({type, msg}, _from, name) do
+    Logger.Logger.log_message("#{name}:#{type}:#{msg}")
+    {:reply, :ok, name}
   end
 end

@@ -18,24 +18,23 @@ defmodule Logger.Logger do
   Log a message sent to this logger
   """
   def log_message(msg) do
-    :gen_server.cast @name, {:log, msg}
+    :gen_server.call @name, {:log, msg}
   end
 
   def init(fname) do
     IO.puts(:stderr, "Opening file")
     case File.open(fname, [:write, :utf8]) do
       {:ok, file} ->
-        IO.puts "Successfully opened"
         { :ok, file }
       {:error, reason} ->
         IO.puts "Failed to open file: #{reason}"
     end
   end
 
-  def handle_cast({:log, msg}, file) do
+  def handle_call({:log, msg}, _from, file) do
     now = time()
     IO.puts(file, "#{now} #{msg}")
-    {:noreply, file}
+    {:reply, {:ok, msg}, file}
   end
 
   defp time() do

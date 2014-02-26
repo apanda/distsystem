@@ -1,19 +1,20 @@
-defmodule Observable.Mixfile do
+defmodule Unshared.Mixfile do
   use Mix.Project
 
   def project do
-    [ app: :observable,
+    [ app: :unshared,
       version: "0.0.1",
-      elixir: "~> 0.12.5-dev",
+      escript_main_module: Unshared, 
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
+      elixir: "~> 0.12.5-dev",
       deps: deps ]
   end
 
-  # Configuration for the OTP application
+  ## Configuration for the OTP application
   def application do
-    [mod: { Observable, "observer" },
-     applications: [:logger ]
+    [
+     applications: [:observable]
     ]
   end
 
@@ -22,7 +23,10 @@ defmodule Observable.Mixfile do
   #
   # To specify particular versions, regardless of the tag, do:
   # { :barbat, "~> 0.1", github: "elixir-lang/barbat" }
+  #
+  # You can depend on another app in the same umbrella with:
+  # { :other, in_umbrella: true }
   defp deps do
-    [ {:logger, in_umbrella: true} ]
+    [ {:observable, in_umbrella: true} ]
   end
 end
