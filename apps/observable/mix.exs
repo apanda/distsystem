@@ -13,7 +13,7 @@ defmodule Observable.Mixfile do
   # Configuration for the OTP application
   def application do
     [mod: { Observable, "observer" },
-     applications: [:logger ]
+     applications: [:relogger ]
     ]
   end
 
@@ -23,6 +23,6 @@ defmodule Observable.Mixfile do
   # To specify particular versions, regardless of the tag, do:
   # { :barbat, "~> 0.1", github: "elixir-lang/barbat" }
   defp deps do
-    [ {:logger, in_umbrella: true} ]
+    [ {:relogger, in_umbrella: true} ]
   end
 end

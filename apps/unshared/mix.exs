@@ -27,6 +27,6 @@ defmodule Unshared.Mixfile do
   # You can depend on another app in the same umbrella with:
   # { :other, in_umbrella: true }
   defp deps do
-    [ {:observable, in_umbrella: true} ]
+    [ {:observable, in_umbrella: true}]
   end
 end

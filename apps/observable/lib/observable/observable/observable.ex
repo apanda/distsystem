@@ -25,12 +25,12 @@ defmodule Observable.Observable do
   end
 
   defp internal_event({type, msg}, count, name) do
-    Logger.Logger.log_message("#{name}:#{type}:#{msg}:internal#{count}")
+    Relogger.Relogger.log_message("#{name}:#{type}:#{msg}:internal:#{count}")
 
   end
 
   def handle_call({:error, msg}, _from, name) do
-    Logger.Logger.log_message("#{name}:normal:#{msg}:external")
+    Relogger.Relogger.log_message("#{name}:normal:#{msg}:external:0")
     Enum.each 1..2, fn x ->
       internal_event({:normal, msg}, x, name)
     end
@@ -39,7 +39,7 @@ defmodule Observable.Observable do
   end
 
   def handle_call({type, msg}, _from, name) do
-    Logger.Logger.log_message("#{name}:#{type}:#{msg}:external")
+    Relogger.Relogger.log_message("#{name}:#{type}:#{msg}:external:0")
     Enum.each 1..2, fn x ->
       internal_event({type, msg}, x, name)
     end
