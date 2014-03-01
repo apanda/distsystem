@@ -8,6 +8,11 @@ defmodule Unshared do
       Enum.each min_sched, fn s ->
         IO.puts s
       end
+      delta_sched = Unshared.DeltaDebugMinimize.delta_minimize(sched)
+      IO.puts "==== DELTA MINIMIZED SCHEDULE ===="
+      Enum.each delta_sched, fn s ->
+        IO.puts s
+      end
       _ -> raise "Usage unshared <schedule>"
     end
   end
