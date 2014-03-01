@@ -4,6 +4,11 @@ defmodule Unshared.ErrorDetector do
   @moduledoc """
   Detect if an error occurred
   """
+  def check_sched(sched) do
+    Relogger.Relogger.clear
+    Unshared.Schedule.run_schedule(sched)
+    error_occured
+  end
 
   def error_occured do
     {:ok, lst} = Relogger.Relogger.get_all

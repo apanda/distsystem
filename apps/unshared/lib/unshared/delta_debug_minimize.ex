@@ -20,7 +20,7 @@ defmodule Unshared.DeltaDebugMinimize do
       case check_scheds(scheds) do
         {:cross, nsched} -> # Found a smaller scheduler
           delta_minimize_subset(nsched, 2) # Reduce to subset
-        {:check, _} -> # No subset found
+         _ -> # No subset found
           delta_minimize_complement(sched, subsets)
       end
     end
@@ -42,7 +42,7 @@ defmodule Unshared.DeltaDebugMinimize do
     case check_scheds(scheds) do
       {:cross, nsched} -> # Reduce to complement
         delta_minimize_subset(nsched, max(subsets - 1, 2))
-      {:check, _} ->
+      _ -> # Neither complement nor subset lead to error
         if subsets < len do
           delta_minimize_subset(sched, min(2 * subsets, len))
         else
@@ -55,9 +55,7 @@ defmodule Unshared.DeltaDebugMinimize do
     case scheds do
       [] -> {:check, nil}
       [sched | rest] -> 
-        Relogger.Relogger.clear
-        Unshared.Schedule.run_schedule(sched)
-        case  Unshared.ErrorDetector.error_occured do
+        case  Unshared.ErrorDetector.check_sched(sched) do
           true -> {:cross, sched} # Short circuit
           false -> check_scheds (rest) # Check the rest of them
         end

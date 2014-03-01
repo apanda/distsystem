@@ -12,9 +12,7 @@ defmodule Unshared.SimpleMinimize do
     case curr_sched do
       [] -> :queue.to_list(required)
       [prefix | rest] ->
-        Relogger.Relogger.clear
-        Unshared.Schedule.run_schedule(Enum.concat(:queue.to_list(required), rest))
-        case  Unshared.ErrorDetector.error_occured do
+        case  Unshared.ErrorDetector.check_sched(Enum.concat(:queue.to_list(required), rest)) do
           true -> simple_minimize(rest, required) # Error happens even if we remove this
           false -> simple_minimize(rest, :queue.in(prefix, required)) # No error
         end
