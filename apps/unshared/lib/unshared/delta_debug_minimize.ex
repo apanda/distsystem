@@ -16,11 +16,12 @@ defmodule Unshared.DeltaDebugMinimize do
       sched
     else
       scheds = Enum.chunk(sched, size, size, [])
+      #IO.puts "Subsets: #{inspect scheds}"
       case check_scheds(scheds) do
         {:cross, nsched} -> # Found a smaller scheduler
           delta_minimize_subset(nsched, 2) # Reduce to subset
         {:check, _} -> # No subset found
-          delta_minimize_complement(sched, 2)
+          delta_minimize_complement(sched, subsets)
       end
     end
   end
@@ -29,14 +30,15 @@ defmodule Unshared.DeltaDebugMinimize do
     #IO.puts("Calling delta_minimize_complement #{inspect sched} with subsets #{subsets}")
     size = div(length(sched), subsets)
     len = length sched
-    indices = Enum.map(Enum.chunk(0 .. len, size, size, []), 
+    indices = Enum.map(Enum.chunk(0 .. (len - 1), size, size, []), 
                    fn (x) -> 
-                      Enum.reject(0 .. len, fn(y) -> y in x end)
+                      Enum.reject(0 .. (len - 1), fn(y) -> y in x end)
                    end)
     scheds = Enum.map(indices, 
                 fn(idx) -> 
-                   Enum.map(fn(i) -> Enum.at(sched, i) end)
+                   Enum.map(idx, fn(i) -> Enum.at(sched, i) end)
                 end)
+    #IO.puts "Complements: #{inspect scheds} (Indicies #{inspect Enum.chunk(0 .. (len - 1), size, size, [])})"
     case check_scheds(scheds) do
       {:cross, nsched} -> # Reduce to complement
         delta_minimize_subset(nsched, max(subsets - 1, 2))

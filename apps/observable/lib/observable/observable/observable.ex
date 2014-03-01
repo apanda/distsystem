@@ -38,6 +38,15 @@ defmodule Observable.Observable do
     {:reply, :ok, name}
   end
 
+  def handle_call({:error1, msg}, _from, name) do
+    Relogger.Relogger.log_message("#{name}:normal:#{msg}:external:0")
+    Enum.each 1..2, fn x ->
+      internal_event({:normal, msg}, x, name)
+    end
+    internal_event({:error1, msg}, 2, name)
+    {:reply, :ok, name}
+  end
+
   def handle_call({type, msg}, _from, name) do
     Relogger.Relogger.log_message("#{name}:#{type}:#{msg}:external:0")
     Enum.each 1..2, fn x ->
